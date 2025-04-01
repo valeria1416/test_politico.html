@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Test de Orientación Política</title>
+    <style>
+        body { font-family: Arial, sans-serif; text-align: center; }
+        .question { margin: 20px 0; }
+        button { margin-top: 20px; padding: 10px 20px; }
+    </style>
+</head>
+<body>
+    <h1>Test de Orientación Política</h1>
+    <div id="quiz"></div>
+    <button onclick="calculateResult()">Ver Resultado</button>
+    <h2 id="result"></h2>
+
+    <script>
+        const questions = [
+            { text: "¿Qué rol debe tener el Estado en la economía?", options: ["Control fuerte del Estado", "Intervención moderada", "Regulación equilibrada", "Mínima intervención", "Libre mercado total"] },
+            { text: "¿Cómo deben manejarse los impuestos?", options: ["Altos para ricos", "Progresivos", "Balanceados", "Bajos con excepciones", "Bajos para inversión"] },
+            { text: "¿Qué opinas sobre el matrimonio igualitario?", options: ["Derecho fundamental", "A favor", "Neutral", "Preferiría el modelo tradicional", "En contra"] },
+            { text: "¿Cómo debe manejarse la migración?", options: ["Fronteras abiertas", "Regular con enfoque humanitario", "Control moderado", "Restringida", "Cierre total"] }
+        ];
+        
+        const candidates = [
+            { name: "Derecha y Extrema Derecha", score: 0, people: ["Miguel Polo Polo", "María Fernanda Cabal", "Miguel Uribe Turbay", "Paloma Valencia", "Andrés Guerra", "Paola Andrea Holguín"] },
+            { name: "Centro-Derecha", score: 0, people: ["David Luna", "Germán Vargas Lleras", "Vicky Dávila", "Enrique Peñalosa", "Juan Daniel Oviedo"] },
+            { name: "Centro", score: 0, people: ["Sergio Fajardo", "Juan Manuel Galán", "Alejandro Gaviria", "Humberto de la Calle"] },
+            { name: "Centro-Izquierda", score: 0, people: ["Claudia López", "Luis Gilberto Murillo", "Jota Pe Hernández"] },
+            { name: "Izquierda", score: 0, people: ["Gustavo Bolívar", "María Alejandra Pizarro", "Francia Márquez"] }
+        ];
+        
+        function generateQuiz() {
+            const quizDiv = document.getElementById("quiz");
+            questions.forEach((q, i) => {
+                let div = document.createElement("div");
+                div.className = "question";
+                div.innerHTML = `<p>${q.text}</p>`;
+                q.options.forEach((option, j) => {
+                    div.innerHTML += `<input type='radio' name='q${i}' value='${j}'> ${option} <br>`;
+                });
+                quizDiv.appendChild(div);
+            });
+        }
+
+        function calculateResult() {
+            questions.forEach((q, i) => {
+                let selected = document.querySelector(`input[name='q${i}']:checked`);
+                if (selected) {
+                    let value = parseInt(selected.value);
+                    candidates[value].score++;
+                }
+            });
+            
+            let result = candidates.reduce((max, candidate) => candidate.score > max.score ? candidate : max, candidates[0]);
+            document.getElementById("result").innerText = `Tu orientación política es: ${result.name}. Posibles candidatos: ${result.people.join(", ")}`;
+        }
+
+        generateQuiz();
+    </script>
+</body>
+</html>
